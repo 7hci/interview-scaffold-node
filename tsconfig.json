@@ -1,0 +1,18 @@
+{
+	"compilerOptions": {
+		"allowSyntheticDefaultImports": true,
+		"declaration": true,
+		"esModuleInterop": true,
+		"lib": ["esnext", "dom"],
+		"module": "commonjs",
+		"outDir": "dist",
+		"rootDir": "src",
+		"strict": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"inlineSourceMap": true,
+		"resolveJsonModule": true,
+		"target": "esnext"
+	},
+	"include": ["src/**/*"]
+}

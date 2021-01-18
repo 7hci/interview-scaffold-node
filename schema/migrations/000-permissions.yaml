@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: 000-permissions-hop_U
+      author: ssayles
+      changes:
+        - sql:
+            sql: |
+              GRANT USAGE ON SCHEMA hop TO "hop_U";
+              GRANT SELECT, DELETE, INSERT, UPDATE ON ALL TABLES IN SCHEMA hop TO "hop_U";
+              GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA hop TO "hop_U";
+              ALTER DEFAULT PRIVILEGES IN SCHEMA hop GRANT SELECT, DELETE, INSERT, UPDATE ON TABLES TO "hop_U";
+              ALTER DEFAULT PRIVILEGES IN SCHEMA hop GRANT USAGE, SELECT ON SEQUENCES TO "hop_U";
+        - sql:
+            splitStatements: false
+            sql: |
+              DO $$
+              BEGIN
+              EXECUTE
+              'ALTER ROLE "hop_U" IN DATABASE "' || current_database() || '" SET search_path = hop,public';
+              END; $$;

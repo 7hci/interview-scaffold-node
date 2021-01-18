@@ -1,0 +1,6 @@
+# Deployment for staging / production environments
+databaseChangeLog:
+  - include:
+      file: migrations/000-permissions.yaml
+      #   - include:
+      #       file: migrations/001-press-releases.yaml

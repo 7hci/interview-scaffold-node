@@ -1,0 +1,42 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-tables
+      author: ssayles
+      changes:
+        - createTable:
+            tableName: press_releases
+            columns:
+              - column:
+                  name: press_release_id
+                  type: integer
+                  autoIncrement: true
+                  constraints:
+                    primaryKeyName: PK__CPR__press_release__K1
+                    primaryKey: true
+              - column:
+                  name: customer_id
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: customer_name
+                  type: text
+              - column:
+                  name: record_created
+                  type: timestamptz(3)
+                  constraints:
+                    nullable: false
+                  defaultValueComputed: CURRENT_TIMESTAMP(3)
+              - column:
+                  name: record_updated
+                  type: timestamptz(3)
+                  constraints:
+                    nullable: false
+                  defaultValueComputed: CURRENT_TIMESTAMP(3)
+        - createIndex:
+            columns:
+              - column:
+                  name: customer_id
+                  type: varchar(100)
+            indexName: IX__CPR__press_releases__K2
+            tableName: press_releases

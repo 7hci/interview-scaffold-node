@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: 000-permissions-dev-check
+      author: ssayles
+      preConditions:
+        - onFail: MARK_RAN
+        - sqlCheck:
+            expectedResult: 0
+            sql: SELECT COUNT(*) FROM pg_user WHERE usename = 'hop_U'
+      changes:
+        - sql:
+            sql: CREATE USER "hop_U" WITH PASSWORD 'hop_U'

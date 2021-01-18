@@ -1,0 +1,12 @@
+port: 3000
+postgres:
+  host: localhost
+  port: 5432
+  user: hop_U
+  password: hop_U
+  database: jumpin
+  ssl: false
+  statement_timeout: 1000
+  connectionTimeoutMillis: 1000
+  idleTimeoutMillis: 10000
+  max: 5

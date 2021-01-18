@@ -42,10 +42,7 @@ export interface Resources {
 /**
  * Converts SQL string tagged template to QueryConfig
  */
-function sqlLiteral(
-	parts: TemplateStringsArray,
-	values: any[],
-): { text: string; values: any[] } {
+function sqlLiteral(parts: TemplateStringsArray, values: any[]): { text: string; values: any[] } {
 	const text = parts.reduce((acc, s, i) => `${acc}$${i}${s}`);
 	return { text, values };
 }

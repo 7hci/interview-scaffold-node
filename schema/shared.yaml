@@ -2,5 +2,5 @@
 databaseChangeLog:
   - include:
       file: migrations/000-permissions.yaml
-      #   - include:
-      #       file: migrations/001-press-releases.yaml
+  - include:
+      file: migrations/001-create-jumpers.yaml

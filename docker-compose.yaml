@@ -16,7 +16,7 @@ services:
       - /bin/bash
       - -c
       - |
-        /src/wait-for-it.sh postgres:5432 -- echo "postgres running"
+        /src/bin/wait-for-it.sh postgres:5432 -- echo "postgres running"
         liquibase \
           --driver=org.postgresql.Driver \
           --logLevel=debug \

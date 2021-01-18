@@ -41,7 +41,7 @@ const filterConfig = CheckFilter(Config);
 
 export function getConfig(): Config {
 	try {
-		return filterConfig(UAConfig(path.join(__dirname, '../../config')).get());
+		return filterConfig(UAConfig(path.join(__dirname, '../config')).get());
 	} catch (e) {
 		// uncaught exception will end program
 		/* istanbul ignore else */

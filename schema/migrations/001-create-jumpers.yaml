@@ -1,26 +1,39 @@
 databaseChangeLog:
   - changeSet:
-      id: 001-create-tables
+      id: 001-create-jumpers
       author: ssayles
       changes:
         - createTable:
-            tableName: press_releases
+            tableName: jumpers
             columns:
               - column:
-                  name: press_release_id
+                  name: jumper_id
                   type: integer
                   autoIncrement: true
                   constraints:
-                    primaryKeyName: PK__CPR__press_release__K1
+                    primaryKeyName: PK__HOP__jumpers__K1
                     primaryKey: true
               - column:
-                  name: customer_id
+                  name: username
                   type: text
                   constraints:
                     nullable: false
               - column:
-                  name: customer_name
+                  name: name
                   type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: jumps
+                  type: integer
+                  constraints:
+                    nullable: false
+                  defaultValue: 0
+              - column:
+                  name: first_jumped_at
+                  type: timestamptz(3)
+                  constraints:
+                    nullable: true
               - column:
                   name: record_created
                   type: timestamptz(3)
@@ -36,7 +49,8 @@ databaseChangeLog:
         - createIndex:
             columns:
               - column:
-                  name: customer_id
-                  type: varchar(100)
-            indexName: IX__CPR__press_releases__K2
-            tableName: press_releases
+                  name: username
+                  type: text
+            indexName: UK__HOP__jumbers__K2
+            tableName: jumpers
+            unique: true

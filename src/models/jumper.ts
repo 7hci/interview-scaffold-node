@@ -40,9 +40,9 @@ export async function insertJumper(db: DB, fields: Omit<JumperDb, 'jumperId'>): 
 }
 
 export async function getJumperById(db: DB, id: number): Promise<JumperDb> {
-	const { rows } = await db.sql`
+	const { rowCount, rows } = await db.sql`
 		SELECT
-			jumper_id AS "jumperId"
+			jumper_id AS "jumperId",
 			username,
 			name,
 			jumps,
@@ -55,6 +55,9 @@ export async function getJumperById(db: DB, id: number): Promise<JumperDb> {
 			jumper_id = ${id}
 	`;
 
+	if (rowCount === 0) {
+		throw new Error('not found');
+	}
 	return rows[0];
 }
 
@@ -68,9 +71,9 @@ export async function getJumpers(
 			SELECT *
 			FROM jumpers
 		),
-		jumpers_count AS (SELECT count(*) FROM cte),
+		jumpers_count AS (SELECT count(*) FROM cte)
 		SELECT 
-			jumper_id AS "jumperId"
+			jumper_id AS "jumperId",
 			username,
 			name,
 			jumps,
@@ -81,8 +84,8 @@ export async function getJumpers(
 		FROM
 			cte
 		ORDER BY jumper_id DESC
-		OFFSET ${offset}
 		LIMIT ${pageSize}
+		OFFSET ${offset}
 	`;
 	return rows;
 }
@@ -90,7 +93,9 @@ export async function getJumpers(
 export async function incrementJump(db: DB, jumperId: number): Promise<number> {
 	const { rows } = await db.sql`
 		UPDATE jumpers
-		SET jumps = jumps + 1
+		SET
+			jumps = jumps + 1,
+			first_jumped_at = COALESCE(first_jumped_at, CURRENT_TIMESTAMP(3))
 		WHERE jumper_id = ${jumperId}
 		RETURNING (
 			jumps

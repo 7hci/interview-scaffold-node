@@ -8,6 +8,7 @@ import Bluebird from 'bluebird';
 import config from './config';
 import logger from './logger';
 import { getResources, Resources } from './resources';
+import apiRouter from './api';
 
 export interface WebServerWorker {
 	listen: (port?: number) => Promise<http.Server>;
@@ -15,17 +16,21 @@ export interface WebServerWorker {
 	server: http.Server;
 }
 
-export function createServer(_resources: Resources): Readonly<WebServerWorker> {
+export function createServer(resources: Resources): Readonly<WebServerWorker> {
 	const app = express();
 
-	app.enable('case sensitive routing');
-	app.enable('strict routing');
+	// app.enable('case sensitive routing');
+	// app.enable('strict routing');
 
-	app.get('/', (_req, res) => {
-		res.json({ hello: 'world' });
+	app.use((req, _, next) => {
+		req.context = { resources };
+		next();
 	});
 
-	const errorHandler: ErrorRequestHandler = (err, req, res, _next): void => {
+	app.use('/api', apiRouter);
+
+	const errorHandler: ErrorRequestHandler = (err, req, res, next): void => {
+		console.log('in error handler');
 		/* istanbul ignore next: ignore testing the trivial defaults */
 		const { status = 500, message = 'Internal Service Error' } = err;
 
@@ -34,6 +39,7 @@ export function createServer(_resources: Resources): Readonly<WebServerWorker> {
 
 		res.status(status).send({ error: message });
 		logger.error(req.method, req.originalUrl, err.stack, message);
+		next(err);
 	};
 	app.use(errorHandler);
 
@@ -87,7 +93,9 @@ export default class WebServer {
 				return new Promise((resolve) => {
 					const eventHandler = (err?: NodeJS.Signals | Error): void => {
 						/* istanbul ignore else */
-						if (err) {
+						if (err === 'SIGTERM' || err === 'SIGINT') {
+							logger.info('Shutting down', err);
+						} else {
 							logger.error(err);
 						}
 						resolve();

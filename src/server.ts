@@ -19,8 +19,8 @@ export interface WebServerWorker {
 export function createServer(resources: Resources): Readonly<WebServerWorker> {
 	const app = express();
 
-	// app.enable('case sensitive routing');
-	// app.enable('strict routing');
+	app.enable('case sensitive routing');
+	app.enable('strict routing');
 
 	app.use((req, _, next) => {
 		req.context = { resources };

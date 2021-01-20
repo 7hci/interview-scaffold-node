@@ -10,7 +10,9 @@ export interface JumperDb {
 	recordUpated: Date;
 }
 
-export async function insertJumper(db: DB, fields: Omit<JumperDb, 'jumperId'>): Promise<JumperDb> {
+export type JumperDbInsert = Pick<JumperDb, 'name' | 'username'> & Partial<JumperDb>;
+
+export async function insertJumper(db: DB, fields: JumperDbInsert): Promise<JumperDb> {
 	const result = await db.sql`
 		INSERT INTO jumpers (
 			username,
@@ -22,19 +24,19 @@ export async function insertJumper(db: DB, fields: Omit<JumperDb, 'jumperId'>): 
 		) VALUES (
 			${fields.username},
 			${fields.name},
-			${fields.jumps},
+			COALESCE(${fields.jumps}, 0),
 			${fields.firstJumpedAt},
 			COALESCE(${fields.recordCreated}, CURRENT_TIMESTAMP(3)),
 			COALESCE(${fields.recordUpated}, CURRENT_TIMESTAMP(3))
-		) RETURNING (
-			jumper_id AS "jumperId"
+		) RETURNING
+			jumper_id AS "jumperId",
 			username,
 			name,
 			jumps,
 			first_jumped_at AS "firstJumpedAt",
 			record_created AS "recordCreated",
 			record_updated AS "recordUpdated"
-		)`;
+		`;
 
 	return result.rows[0];
 }

@@ -9,6 +9,7 @@
 		"@types/bluebird": "^3.5.33",
 		"@types/pg": "^7.14.8",
 		"@types/pg-format": "^1.0.1",
+		"@types/uuid": "^8.3.0",
 		"bluebird": "^3.7.2",
 		"express": "^4.17.1",
 		"pg": "^8.5.1",
@@ -16,7 +17,8 @@
 		"runtypes": "^5.0.1",
 		"runtypes-filter": "^0.4.2",
 		"tslog": "^3.0.5",
-		"ua-config": "^2.1.0"
+		"ua-config": "^2.1.0",
+		"uuid": "^8.3.2"
 	},
 	"devDependencies": {
 		"@types/express": "^4.17.11",

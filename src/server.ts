@@ -30,7 +30,6 @@ export function createServer(resources: Resources): Readonly<WebServerWorker> {
 	app.use('/api', apiRouter);
 
 	const errorHandler: ErrorRequestHandler = (err, req, res, next): void => {
-		console.log('in error handler');
 		/* istanbul ignore next: ignore testing the trivial defaults */
 		const { status = 500, message = 'Internal Service Error' } = err;
 

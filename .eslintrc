@@ -1,4 +1,5 @@
 {
+  "root": true,
   "plugins": ["@typescript-eslint"],
   "extends": [
     "eslint-config-airbnb-base",
@@ -10,7 +11,8 @@
     "prettier"
   ],
   "parserOptions": {
-    "project": "./tsconfig.json"
+    "project": "./tsconfig.json",
+	"createDefaultProgram": true
   },
   "rules": {
     "import/extensions": [
